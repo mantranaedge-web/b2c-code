@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CourseCard from '@/components/CourseCard';
+import LeadForm from '@/components/LeadForm';
 
 export default function HomePage() {
   const [courses, setCourses] = useState([]);
@@ -10,6 +11,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedLevel, setSelectedLevel] = useState('All');
+  const [showContactForm, setShowContactForm] = useState(false);
 
   // Fetch courses on component mount
   useEffect(() => {
@@ -57,16 +60,35 @@ export default function HomePage() {
   // Handle category filter
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    if (category === 'All') {
-      setFilteredCourses(courses);
-    } else {
-      const filtered = courses.filter((course) => course.category === category);
-      setFilteredCourses(filtered);
-    }
+    applyFilters(category, selectedLevel);
   };
 
-  // Get unique categories
+  // Handle level filter
+  const handleLevelChange = (level) => {
+    setSelectedLevel(level);
+    applyFilters(selectedCategory, level);
+  };
+
+  // Apply both category and level filters
+  const applyFilters = (category, level) => {
+    let filtered = courses;
+
+    // Filter by category
+    if (category !== 'All') {
+      filtered = filtered.filter((course) => course.category === category);
+    }
+
+    // Filter by level
+    if (level !== 'All') {
+      filtered = filtered.filter((course) => course.level === level);
+    }
+
+    setFilteredCourses(filtered);
+  };
+
+  // Get unique categories and levels
   const categories = ['All', ...new Set(courses.map((course) => course.category))];
+  const levels = ['All', ...new Set(courses.map((course) => course.level))];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -102,22 +124,46 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Category Filter */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 rounded-full font-medium transition-all ${
-                  selectedCategory === category
-                    ? 'bg-primary-600 text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+        {/* Filters */}
+        <div className="mb-8 space-y-4">
+          {/* Category Filter */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Category</h3>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`px-4 py-2 rounded-full font-medium transition-all ${
+                    selectedCategory === category
+                      ? 'bg-primary-600 text-white shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Level Filter */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Level</h3>
+            <div className="flex flex-wrap gap-2">
+              {levels.map((level) => (
+                <button
+                  key={level}
+                  onClick={() => handleLevelChange(level)}
+                  className={`px-4 py-2 rounded-full font-medium transition-all ${
+                    selectedLevel === level
+                      ? 'bg-primary-600 text-white shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -191,9 +237,12 @@ export default function HomePage() {
                 ? 'No courses are available at the moment.'
                 : 'Try adjusting your search or filter criteria.'}
             </p>
-            {selectedCategory !== 'All' && (
+            {(selectedCategory !== 'All' || selectedLevel !== 'All') && (
               <button
-                onClick={() => handleCategoryChange('All')}
+                onClick={() => {
+                  handleCategoryChange('All');
+                  handleLevelChange('All');
+                }}
                 className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
               >
                 Show All Courses
@@ -220,24 +269,17 @@ export default function HomePage() {
               <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
                   <Link href="/" className="text-gray-400 hover:text-white transition-colors">
                     Courses
                   </Link>
                 </li>
                 <li>
-                  <Link href="/business" className="text-gray-400 hover:text-white transition-colors">
-                    For Business
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
-                    Contact
-                  </Link>
+                  <button
+                    onClick={() => setShowContactForm(true)}
+                    className="text-gray-400 hover:text-white transition-colors text-left"
+                  >
+                    Contact Us
+                  </button>
                 </li>
               </ul>
             </div>
@@ -281,6 +323,14 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <LeadForm
+          courseName="General Inquiry"
+          onClose={() => setShowContactForm(false)}
+        />
+      )}
     </div>
   );
 }

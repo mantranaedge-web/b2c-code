@@ -84,7 +84,6 @@ export default function CourseDetailPage() {
             <div>★ {display.rating}</div>
             <div>{display.studentsEnrolled}+ Students</div>
             <div>⏱️ {display.duration}</div>
-            <div>👨‍🏫 {display.instructor}</div>
           </div>
         </div>
       </div>
@@ -141,27 +140,10 @@ export default function CourseDetailPage() {
                 </ul>
               </div>
             )}
-
-            <div className="bg-white rounded-lg shadow p-8">
-              <h2 className="text-2xl font-bold mb-4">Your Instructor</h2>
-              <div className="flex gap-4">
-                <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center text-2xl font-bold">
-                  {display.instructor.charAt(0)}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">{display.instructor}</h3>
-                  <p className="text-gray-600 mt-2">{display.instructorBio}</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div>
             <div className="bg-white rounded-lg shadow-lg p-6 sticky top-6">
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold mb-2">₹{display.price.toLocaleString()}</div>
-                <div className="text-gray-600">One-time payment</div>
-              </div>
               <button
                 onClick={() => setShowLeadForm(true)}
                 className="w-full bg-primary-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-primary-700 mb-4"
