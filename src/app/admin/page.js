@@ -1,21 +1,32 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export default function AdminPanel() {
   const {  session, status } = useSession();
+  const router = useRouter();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
 
+  // Redirect to login if not authenticated
   useEffect(() => {
-    fetchLeads();
-  }, []);
+    if (status === 'unauthenticated') {
+      router.push('/admin/login');
+    }
+  }, [status, router]);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetchLeads();
+    }
+  }, [status]);
 
   const fetchLeads = async () => {
     try {
@@ -51,6 +62,23 @@ export default function AdminPanel() {
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
+
+  // Show loading while checking authentication
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if not authenticated (will redirect)
+  if (status === 'unauthenticated') {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

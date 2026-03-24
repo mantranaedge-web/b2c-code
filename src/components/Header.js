@@ -2,10 +2,12 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import LeadForm from './LeadForm';
 
 function HeaderContent({ onSearch }) {
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState('');
+  const [showContactForm, setShowContactForm] = useState(false);
 
   const isActive = (path) => pathname === path;
 
@@ -25,10 +27,10 @@ function HeaderContent({ onSearch }) {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">ED</span>
+              <span className="text-white font-bold text-xl">M</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">EdTech Pro</h1>
+              <h1 className="text-xl font-bold text-gray-900">Mantranaedge</h1>
               <p className="text-xs text-gray-500">Corporate Training</p>
             </div>
           </Link>
@@ -63,41 +65,22 @@ function HeaderContent({ onSearch }) {
 
           {/* Right Nav */}
           <nav className="flex items-center gap-4">
-            <Link
-              href="/"
-              className={`hidden sm:block px-4 py-2 rounded-lg font-medium transition-colors ${
-                isActive('/')
-                  ? 'bg-primary-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="bg-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors"
             >
-              Courses
-            </Link>
-            <Link
-              href="/admin"
-              className={`hidden sm:block px-4 py-2 rounded-lg font-medium transition-colors ${
-                isActive('/admin')
-                  ? 'bg-primary-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Admin
-            </Link>
-            <Link
-              href="/vendor"
-              className={`hidden sm:block px-4 py-2 rounded-lg font-medium transition-colors ${
-                isActive('/vendor')
-                  ? 'bg-primary-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Vendor
-            </Link>
-            <button className="bg-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors">
               Contact Sales
             </button>
           </nav>
         </div>
+
+        {/* Contact Sales Form Modal */}
+        {showContactForm && (
+          <LeadForm
+            courseName="General Inquiry"
+            onClose={() => setShowContactForm(false)}
+          />
+        )}
 
         {/* Mobile Search */}
         {pathname === '/' && (
@@ -127,39 +110,6 @@ function HeaderContent({ onSearch }) {
           </div>
         )}
 
-        {/* Mobile Menu */}
-        <div className="sm:hidden flex gap-2 pb-4">
-          <Link
-            href="/"
-            className={`flex-1 text-center px-4 py-2 rounded-lg font-medium transition-colors ${
-              isActive('/')
-                ? 'bg-primary-600 text-white'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Courses
-          </Link>
-          <Link
-            href="/admin"
-            className={`flex-1 text-center px-4 py-2 rounded-lg font-medium transition-colors ${
-              isActive('/admin')
-                ? 'bg-primary-600 text-white'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Admin
-          </Link>
-          <Link
-            href="/vendor"
-            className={`flex-1 text-center px-4 py-2 rounded-lg font-medium transition-colors ${
-              isActive('/vendor')
-                ? 'bg-primary-600 text-white'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Vendor
-          </Link>
-        </div>
       </div>
     </header>
   );
@@ -173,10 +123,10 @@ export default function Header({ onSearch }) {
           <div className="flex items-center justify-between py-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">ED</span>
+                <span className="text-white font-bold text-xl">M</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">EdTech Pro</h1>
+                <h1 className="text-xl font-bold text-gray-900">Mantranaedge</h1>
                 <p className="text-xs text-gray-500">Corporate Training</p>
               </div>
             </Link>

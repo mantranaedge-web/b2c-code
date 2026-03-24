@@ -50,15 +50,6 @@ export default function CourseCard({ course }) {
             </div>
           </div>
 
-          <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-2">
-              <strong>Instructor:</strong> {course.instructor}
-            </p>
-            <p className="text-2xl font-bold text-primary-700">
-              ₹{course.price.toLocaleString()}
-            </p>
-          </div>
-
           <button
             onClick={() => setShowLeadForm(true)}
             className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200"
