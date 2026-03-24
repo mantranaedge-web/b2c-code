@@ -1,0 +1,279 @@
+'use client';
+import { useState } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import LeadForm from '../../../components/LeadForm';
+
+export const dynamic = 'force-dynamic';
+
+// Sample course data (in production, this would come from MongoDB via API)
+const coursesData = {
+  '1': {
+    id: 1,
+    title: 'Full Stack Web Development',
+    description: 'Master modern web development with React, Node.js, and MongoDB. Build production-ready applications from scratch.',
+    fullDescription: 'This comprehensive Full Stack Web Development course will take you from beginner to professional developer. You\'ll learn the complete web development stack including frontend technologies like React, backend with Node.js and Express, and database management with MongoDB. The course includes real-world projects, best practices, and deployment strategies.',
+    duration: '12 weeks',
+    level: 'Intermediate',
+    price: 49999,
+    category: 'Web Development',
+    instructor: 'Rajesh Kumar',
+    instructorBio: '15+ years of experience in web development. Previously worked at Google and Microsoft.',
+    rating: 4.8,
+    studentsEnrolled: 2500,
+    modules: [
+      { title: 'HTML & CSS Fundamentals', duration: '1 week', description: 'Learn the building blocks of web development' },
+      { title: 'JavaScript Essentials', duration: '2 weeks', description: 'Master modern JavaScript and ES6+' },
+      { title: 'React.js Development', duration: '3 weeks', description: 'Build dynamic user interfaces with React' },
+      { title: 'Node.js & Express', duration: '2 weeks', description: 'Create powerful backend APIs' },
+      { title: 'MongoDB & Database Design', duration: '2 weeks', description: 'Learn NoSQL database management' },
+      { title: 'Full Stack Projects', duration: '2 weeks', description: 'Build and deploy complete applications' },
+    ],
+    learningOutcomes: [
+      'Build full-stack web applications from scratch',
+      'Master React.js for frontend development',
+      'Create RESTful APIs with Node.js and Express',
+      'Work with MongoDB and database design',
+      'Deploy applications to production',
+      'Implement authentication and authorization',
+    ],
+    prerequisites: [
+      'Basic computer skills',
+      'Understanding of programming concepts (helpful but not required)',
+      'Passion for learning web development',
+    ],
+  },
+  '2': {
+    id: 2,
+    title: 'Data Science & Machine Learning',
+    description: 'Learn Python, data analysis, and machine learning algorithms. Build predictive models and AI solutions.',
+    fullDescription: 'Dive deep into the world of Data Science and Machine Learning. This course covers Python programming, statistical analysis, data visualization, and advanced machine learning algorithms. You\'ll work on real-world datasets and build predictive models.',
+    duration: '16 weeks',
+    level: 'Advanced',
+    price: 59999,
+    category: 'Data Science',
+    instructor: 'Priya Sharma',
+    instructorBio: 'PhD in Computer Science, 10+ years in AI/ML research and industry applications.',
+    rating: 4.9,
+    studentsEnrolled: 1800,
+    modules: [
+      { title: 'Python for Data Science', duration: '2 weeks', description: 'Master Python libraries for data analysis' },
+      { title: 'Statistics & Probability', duration: '2 weeks', description: 'Learn statistical foundations' },
+      { title: 'Data Visualization', duration: '2 weeks', description: 'Create compelling data visualizations' },
+      { title: 'Machine Learning Fundamentals', duration: '3 weeks', description: 'Understand ML algorithms' },
+      { title: 'Deep Learning & Neural Networks', duration: '3 weeks', description: 'Build advanced AI models' },
+      { title: 'ML Projects & Deployment', duration: '4 weeks', description: 'Deploy ML models to production' },
+    ],
+    learningOutcomes: [
+      'Master Python for data analysis',
+      'Build machine learning models',
+      'Work with neural networks and deep learning',
+      'Analyze and visualize complex datasets',
+      'Deploy ML models to production',
+      'Understand AI ethics and best practices',
+    ],
+    prerequisites: [
+      'Strong mathematical foundation',
+      'Basic programming knowledge',
+      'Understanding of statistics (recommended)',
+    ],
+  },
+  // Add other courses as needed
+};
+
+export default function CourseDetailPage() {
+  const params = useParams();
+  const [showLeadForm, setShowLeadForm] = useState(false);
+  
+  // DIAGNOSTIC LOG: Check data source
+  console.log('[DIAGNOSTIC] Course Detail Page:', {
+    courseId: params.id,
+    dataSource: 'HARDCODED',
+    shouldBe: 'GOOGLE_SHEETS',
+    timestamp: new Date().toISOString()
+  });
+  
+  const course = coursesData[params.id] || coursesData['1'];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <Link href="/" className="text-primary-600 hover:text-primary-700 font-semibold">
+            ← Back to Courses
+          </Link>
+        </div>
+      </nav>
+
+      {/* Course Header */}
+      <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
+              {course.category}
+            </span>
+            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
+              {course.level}
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">{course.title}</h1>
+          <p className="text-xl text-primary-100 mb-6 max-w-3xl">{course.description}</p>
+          
+          <div className="flex flex-wrap items-center gap-6 text-primary-100">
+            <div className="flex items-center gap-2">
+              <span className="text-yellow-400">★</span>
+              <span>{course.rating} Rating</span>
+            </div>
+            <div>{course.studentsEnrolled}+ Students</div>
+            <div>⏱️ {course.duration}</div>
+            <div>👨‍🏫 {course.instructor}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Course Details */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* About */}
+            <div className="bg-white rounded-lg shadow p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Course</h2>
+              <p className="text-gray-600 leading-relaxed">{course.fullDescription}</p>
+            </div>
+
+            {/* Learning Outcomes */}
+            <div className="bg-white rounded-lg shadow p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">What You'll Learn</h2>
+              <ul className="space-y-3">
+                {course.learningOutcomes.map((outcome, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="text-green-500 text-xl">✓</span>
+                    <span className="text-gray-600">{outcome}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Course Modules */}
+            <div className="bg-white rounded-lg shadow p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Curriculum</h2>
+              <div className="space-y-4">
+                {course.modules.map((module, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-4 hover:border-primary-300 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-semibold text-gray-900">
+                        Module {index + 1}: {module.title}
+                      </h3>
+                      <span className="text-sm text-gray-500">{module.duration}</span>
+                    </div>
+                    <p className="text-gray-600 text-sm">{module.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Prerequisites */}
+            <div className="bg-white rounded-lg shadow p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Prerequisites</h2>
+              <ul className="space-y-2">
+                {course.prerequisites.map((prereq, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="text-primary-600">•</span>
+                    <span className="text-gray-600">{prereq}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Instructor */}
+            <div className="bg-white rounded-lg shadow p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Instructor</h2>
+              <div className="flex items-start gap-4">
+                <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 text-2xl font-bold">
+                  {course.instructor.charAt(0)}
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900">{course.instructor}</h3>
+                  <p className="text-gray-600 mt-2">{course.instructorBio}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Enrollment Card */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-lg p-6 sticky top-6">
+              <div className="text-center mb-6">
+                <div className="text-4xl font-bold text-gray-900 mb-2">
+                  ₹{course.price.toLocaleString()}
+                </div>
+                <div className="text-gray-600">One-time payment</div>
+              </div>
+
+              <button
+                onClick={() => setShowLeadForm(true)}
+                className="w-full bg-primary-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200 mb-4"
+              >
+                Enquire Now
+              </button>
+
+              <div className="border-t pt-4 space-y-3">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Duration</span>
+                  <span className="font-semibold">{course.duration}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Level</span>
+                  <span className="font-semibold">{course.level}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Students</span>
+                  <span className="font-semibold">{course.studentsEnrolled}+</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Rating</span>
+                  <span className="font-semibold">{course.rating} ★</span>
+                </div>
+              </div>
+
+              <div className="border-t mt-4 pt-4">
+                <h4 className="font-semibold text-gray-900 mb-3">This course includes:</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
+                    Lifetime access
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
+                    Certificate of completion
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
+                    Instructor support
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
+                    Practical projects
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
+                    Study materials
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {showLeadForm && (
+        <LeadForm
+          courseName={course.title}
+          onClose={() => setShowLeadForm(false)}
+        />
+      )}
+    </div>
+  );
+}

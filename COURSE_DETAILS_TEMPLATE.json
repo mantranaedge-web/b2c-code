@@ -1,0 +1,138 @@
+{
+  "courseDetails": [
+    {
+      "courseTitle": "ITIL ® 4 Foundation",
+      "courseLevel": "Foundation",
+      "fullDescription": "ITIL 4 Foundation is the latest evolution of the most widely adopted guidance for ITSM. Its audience ranges from IT and business students taking their first steps in service management to seasoned professionals familiar with earlier versions of ITIL and other sources of industry best practice. ITIL certification is an essential requirement for professionals who need to learn the fundamentals of ITIL frameworks and how they may be used to enhance the quality of IT service management.",
+      "targetAudience": "IT professionals engaged in Service Delivery, IT Managers/Support Teams, System Administrators/Analysts, Operations Managers, Database Administrators, Service Delivery Professionals",
+      "keyConcepts": [
+        "IT service management in the modern world",
+        "The ITIL Service Value system or SVS",
+        "The four dimensions model",
+        "Key concepts of service management such as Value and value co-creation, stakeholders, Service consumers and stakeholders, Costs, Risks, Utility and warranty",
+        "Guiding Principles, and the Service Value Chain along with the continuous Improvement Model",
+        "ITIL management practices such as General management practices, Service management practices and technical management practices"
+      ],
+      "learningOutcomes": [
+        "Understand ITSM concepts and terminology",
+        "Apply ITIL guiding principles in practice",
+        "Understand the ITIL service value chain",
+        "Know how to improve service management practices",
+        "Understand the four dimensions of service management"
+      ],
+      "benefitsOrganizations": [
+        "Improved service quality and customer satisfaction",
+        "Better alignment between IT and business objectives",
+        "Reduced costs through efficient service management",
+        "Enhanced productivity and resource optimization"
+      ],
+      "benefitsIndividuals": [
+        "Industry-recognized certification",
+        "Career advancement opportunities",
+        "Practical skills for immediate application",
+        "Foundation for advanced ITIL certifications"
+      ],
+      "prerequisites": [
+        "None - suitable for beginners in ITSM"
+      ],
+      "examFormat": "Multiple choice",
+      "examQuestions": 40,
+      "examPassPercentage": 65,
+      "examDuration": "60 minutes",
+      "examBookType": "Closed book",
+      "instructorBio": "15+ years of experience in IT Service Management. ITIL Expert certified with extensive experience training over 3000 professionals across multiple countries. Specializes in ITSM implementation and service improvement."
+    },
+    {
+      "courseTitle": "DevOps Foundation",
+      "courseLevel": "Foundation",
+      "fullDescription": "DevOps is a software development methodology that combines software development (Dev) with information technology operations (Ops). The goal of DevOps is to shorten the systems development life cycle while delivering software releases frequently in close alignment with business objectives in a faster, better, and cheaper fashion. The DevOps approach to work covers three critical success factors: cultural shift, improvement of practices and processes, and leverage of automation technologies.",
+      "targetAudience": "IT practitioners, DevOps professionals, Agile practitioners, Project managers, Software developers, Operations staff who want to understand DevOps principles",
+      "keyConcepts": [
+        "DevOps concepts and terminology",
+        "Core DevOps Principles",
+        "Key DevOps Practices",
+        "Business and Technology Frameworks",
+        "Culture, Behaviors and Operating Models",
+        "Automation and Architecting DevOps Toolchains",
+        "Measurement, Metrics, and Reporting",
+        "Sharing, Shadowing and Evolving"
+      ],
+      "learningOutcomes": [
+        "Common DevOps concepts and terminology",
+        "Benefits to the business and IT",
+        "Continuous Integration, Continuous Delivery, testing, security and the Three Ways",
+        "DevOps relationship to Agile, Lean and ITSM",
+        "Improved workflows, communication, and feedback loops",
+        "Automation practices including deployment pipelines and DevOps toolchains",
+        "Scaling DevOps for the enterprise",
+        "Demonstrate entry-level of DevOps knowledge"
+      ],
+      "benefitsOrganizations": [
+        "Shorter development cycles, faster innovation",
+        "Reduced deployment failures, rollbacks, and time to recover",
+        "Improved communication and collaboration",
+        "Increased efficiencies",
+        "Reduced costs and IT headcount"
+      ],
+      "benefitsIndividuals": [
+        "Entry-level DevOps knowledge and certification",
+        "Career advancement in DevOps field",
+        "Understanding of modern development practices",
+        "Improved collaboration skills",
+        "Knowledge of automation tools and practices"
+      ],
+      "prerequisites": [
+        "Basic understanding of IT operations",
+        "Familiarity with software development lifecycle (recommended)"
+      ],
+      "examFormat": "Multiple choice",
+      "examQuestions": 40,
+      "examPassPercentage": 65,
+      "examDuration": "60 minutes",
+      "examBookType": "Open book",
+      "instructorBio": "DevOps practitioner with 10+ years of experience in software development and operations. Has led digital transformations at Fortune 500 companies. Certified DevOps Leader and trainer with expertise in CI/CD, automation, and cloud technologies."
+    },
+    {
+      "courseTitle": "Prince2 ® 7 Foundation",
+      "courseLevel": "Foundation",
+      "fullDescription": "PRINCE2 is a project management method that offers a structured, scalable, and tailorable approach to project management. Its focus on governance, risk management, and benefits realization sets it apart from other qualifications. By integrating agile concepts and emphasizing tailoring, the new PRINCE2 is even more adaptable to diverse project environments.",
+      "targetAudience": "Project managers, aspiring project managers, team members, project board members, anyone involved in managing or working on projects",
+      "keyConcepts": [
+        "Central Focus on People Management, recognizing the importance of human capital in project success",
+        "Enhanced Flexibility and Customization, adapting to the unique requirements of each project, across sectors",
+        "Embracing Digital and Data Management, equipping you with the right tools to keep your projects up to date in the digital era",
+        "Integration of Sustainability into Project Performance, aligning projects with environmental and social responsibility goals",
+        "Compatibility with Agile, Lean, and ITIL, enhancing overall project performance",
+        "Simplified language and content accessible to all professionals"
+      ],
+      "learningOutcomes": [
+        "Understand the PRINCE2 methodology and principles",
+        "Apply PRINCE2 themes in project context",
+        "Understand PRINCE2 processes",
+        "Tailor PRINCE2 to project environment",
+        "Understand roles and responsibilities in PRINCE2"
+      ],
+      "benefitsOrganizations": [
+        "Structured approach to project management",
+        "Better project governance and control",
+        "Improved success rates for projects",
+        "Standardized project management approach across organization"
+      ],
+      "benefitsIndividuals": [
+        "Globally recognized project management certification",
+        "Enhanced career prospects in project management",
+        "Practical project management skills",
+        "Foundation for advanced PRINCE2 certifications"
+      ],
+      "prerequisites": [
+        "None - suitable for beginners in project management"
+      ],
+      "examFormat": "Multiple choice",
+      "examQuestions": 60,
+      "examPassPercentage": 60,
+      "examDuration": "60 minutes",
+      "examBookType": "Closed book",
+      "instructorBio": "Certified PRINCE2 Practitioner and trainer with 12+ years of project management experience. Has successfully delivered projects across various industries including IT, construction, and finance. Expert in project governance and tailoring methodologies to organizational needs."
+    }
+  ]
+}

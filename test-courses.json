@@ -1,0 +1,38 @@
+[
+  {
+    "title": "ITIL ® 4 Foundation",
+    "description": "Master the fundamentals of IT Service Management with ITIL 4. Learn the latest evolution of the most widely adopted guidance for ITSM, covering the Service Value System, guiding principles, and key practices.",
+    "duration": "3 days",
+    "level": "Foundation",
+    "price": 25999,
+    "category": "IT Service Management",
+    "instructor": "ITIL Expert Trainer",
+    "rating": 4.9,
+    "studentsEnrolled": 2500,
+    "isActive": true
+  },
+  {
+    "title": "DevOps Foundation",
+    "description": "Learn DevOps principles and practices to improve collaboration between development and operations teams. Understand CI/CD, automation, and how to implement DevOps in your organization.",
+    "duration": "2 days",
+    "level": "Foundation",
+    "price": 22999,
+    "category": "DevOps",
+    "instructor": "DevOps Certified Trainer",
+    "rating": 4.8,
+    "studentsEnrolled": 1800,
+    "isActive": true
+  },
+  {
+    "title": "Prince2 ® 7 Foundation",
+    "description": "Learn the PRINCE2 project management methodology with the latest 7th edition. Master structured, scalable, and tailorable approach to project management with enhanced flexibility and digital integration.",
+    "duration": "3 days",
+    "level": "Foundation",
+    "price": 24999,
+    "category": "Project Management",
+    "instructor": "PRINCE2 Certified Trainer",
+    "rating": 4.7,
+    "studentsEnrolled": 2200,
+    "isActive": true
+  }
+]
