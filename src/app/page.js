@@ -126,48 +126,69 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Filters */}
-        <div className="mb-8 space-y-4">
-          {/* Category Filter */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">Category</h3>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryChange(category)}
-                  className={`px-4 py-2 rounded-full font-medium transition-all ${
-                    selectedCategory === category
-                      ? 'bg-primary-600 text-white shadow-md'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="flex gap-8">
+          {/* Left Sidebar - Filters */}
+          <aside className="w-64 flex-shrink-0">
+            <div className="sticky top-24 bg-white rounded-lg shadow-md p-6 space-y-6">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Filters</h2>
+              
+              {/* Category Filter */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">Category</h3>
+                <div className="space-y-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryChange(category)}
+                      className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all ${
+                        selectedCategory === category
+                          ? 'bg-primary-600 text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          {/* Level Filter */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">Level</h3>
-            <div className="flex flex-wrap gap-2">
-              {levels.map((level) => (
+              {/* Level Filter */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">Level</h3>
+                <div className="space-y-2">
+                  {levels.map((level) => (
+                    <button
+                      key={level}
+                      onClick={() => handleLevelChange(level)}
+                      className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all ${
+                        selectedLevel === level
+                          ? 'bg-primary-600 text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {level}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Clear Filters Button */}
+              {(selectedCategory !== 'All' || selectedLevel !== 'All') && (
                 <button
-                  key={level}
-                  onClick={() => handleLevelChange(level)}
-                  className={`px-4 py-2 rounded-full font-medium transition-all ${
-                    selectedLevel === level
-                      ? 'bg-primary-600 text-white shadow-md'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                  }`}
+                  onClick={() => {
+                    handleCategoryChange('All');
+                    handleLevelChange('All');
+                  }}
+                  className="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors"
                 >
-                  {level}
+                  Clear All Filters
                 </button>
-              ))}
+              )}
             </div>
-          </div>
-        </div>
+          </aside>
+
+          {/* Right Content Area */}
+          <div className="flex-1 min-w-0">
 
         {/* Loading State */}
         {loading && (
@@ -206,14 +227,14 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Courses Grid */}
-        {!loading && !error && filteredCourses.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
-        )}
+            {/* Courses Grid */}
+            {!loading && !error && filteredCourses.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredCourses.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+            )}
 
         {/* No Courses Found */}
         {!loading && !error && filteredCourses.length === 0 && (
@@ -251,7 +272,9 @@ export default function HomePage() {
               </button>
             )}
           </div>
-        )}
+            )}
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
