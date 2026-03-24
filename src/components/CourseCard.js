@@ -41,15 +41,6 @@ export default function CourseCard({ course }) {
             View Details →
           </Link>
 
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-500">★</span>
-              <span className="text-sm font-medium text-gray-700">
-                {course.rating} ({course.studentsEnrolled}+ students)
-              </span>
-            </div>
-          </div>
-
           <button
             onClick={() => setShowLeadForm(true)}
             className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200"

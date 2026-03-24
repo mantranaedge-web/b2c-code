@@ -109,6 +109,7 @@ export default function HomePage() {
                 <span className="text-2xl font-bold">{courses.length}+</span>
                 <span className="ml-2">Courses</span>
               </div>
+              {/* Commented out for now
               <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
                 <span className="text-2xl font-bold">500+</span>
                 <span className="ml-2">Companies</span>
@@ -117,6 +118,7 @@ export default function HomePage() {
                 <span className="text-2xl font-bold">10k+</span>
                 <span className="ml-2">Professionals Trained</span>
               </div>
+              */}
             </div>
           </div>
         </div>
@@ -258,7 +260,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             {/* Brand Section */}
             <div>
-              <h3 className="text-xl font-bold mb-4">Mantranaedge</h3>
+              <h3 className="text-xl font-bold mb-4">MantranaEdge</h3>
               <p className="text-gray-400 text-sm">
                 Empowering organizations through world-class training
               </p>
@@ -318,7 +320,7 @@ export default function HomePage() {
           {/* Copyright */}
           <div className="border-t border-gray-700 pt-6 text-center">
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Mantranaedge. All rights reserved.
+              © {new Date().getFullYear()} MantranaEdge. All rights reserved.
             </p>
           </div>
         </div>

@@ -30,7 +30,7 @@ function HeaderContent({ onSearch }) {
               <span className="text-white font-bold text-xl">M</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Mantranaedge</h1>
+              <h1 className="text-xl font-bold text-gray-900">MantranaEdge</h1>
               <p className="text-xs text-gray-500">Corporate Training</p>
             </div>
           </Link>
@@ -126,7 +126,7 @@ export default function Header({ onSearch }) {
                 <span className="text-white font-bold text-xl">M</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Mantranaedge</h1>
+                <h1 className="text-xl font-bold text-gray-900">MantranaEdge</h1>
                 <p className="text-xs text-gray-500">Corporate Training</p>
               </div>
             </Link>

@@ -81,7 +81,6 @@ export default function CourseDetailPage() {
           <h1 className="text-4xl font-bold mb-4">{display.title}</h1>
           <p className="text-xl mb-6">{display.description}</p>
           <div className="flex gap-6">
-            <div>★ {display.rating}</div>
             <div>{display.studentsEnrolled}+ Students</div>
             <div>⏱️ {display.duration}</div>
           </div>
@@ -162,10 +161,6 @@ export default function CourseDetailPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Students</span>
                   <span className="font-semibold">{display.studentsEnrolled}+</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Rating</span>
-                  <span className="font-semibold">{display.rating} ★</span>
                 </div>
               </div>
               <div className="border-t mt-4 pt-4">
