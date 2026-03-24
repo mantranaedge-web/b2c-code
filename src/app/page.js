@@ -1,295 +1,183 @@
 'use client';
-import { useState, useMemo, useEffect } from 'react';
-import Header from '../components/Header';
-import CourseCard from '../components/CourseCard';
-import CourseSidebar from '../components/CourseSidebar';
+import { useState, Suspense } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+// Login form component that uses useSearchParams
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-// Sample course data (fallback if Google Sheets is not available)
-const sampleCourses = [
-  {
-    id: 1,
-    title: 'Full Stack Web Development',
-    description: 'Master modern web development with React, Node.js, and MongoDB. Build production-ready applications from scratch.',
-    duration: '12 weeks',
-    level: 'Intermediate',
-    price: 49999,
-    category: 'Web Development',
-    instructor: 'Rajesh Kumar',
-    rating: 4.8,
-    studentsEnrolled: 2500,
-  },
-  {
-    id: 2,
-    title: 'Data Science & Machine Learning',
-    description: 'Learn Python, data analysis, and machine learning algorithms. Build predictive models and AI solutions.',
-    duration: '16 weeks',
-    level: 'Advanced',
-    price: 59999,
-    category: 'Data Science',
-    instructor: 'Priya Sharma',
-    rating: 4.9,
-    studentsEnrolled: 1800,
-  },
-  {
-    id: 3,
-    title: 'Digital Marketing Mastery',
-    description: 'Comprehensive digital marketing training including SEO, SEM, social media, and content marketing strategies.',
-    duration: '8 weeks',
-    level: 'Beginner',
-    price: 29999,
-    category: 'Marketing',
-    instructor: 'Amit Patel',
-    rating: 4.7,
-    studentsEnrolled: 3200,
-  },
-  {
-    id: 4,
-    title: 'Cloud Computing with AWS',
-    description: 'Master Amazon Web Services, cloud architecture, and deployment strategies for scalable applications.',
-    duration: '10 weeks',
-    level: 'Intermediate',
-    price: 44999,
-    category: 'Cloud Computing',
-    instructor: 'Sneha Reddy',
-    rating: 4.8,
-    studentsEnrolled: 1500,
-  },
-  {
-    id: 5,
-    title: 'Cybersecurity Fundamentals',
-    description: 'Learn ethical hacking, network security, and cybersecurity best practices to protect digital assets.',
-    duration: '14 weeks',
-    level: 'Intermediate',
-    price: 54999,
-    category: 'Cybersecurity',
-    instructor: 'Vikram Singh',
-    rating: 4.9,
-    studentsEnrolled: 1200,
-  },
-  {
-    id: 6,
-    title: 'UI/UX Design Bootcamp',
-    description: 'Create stunning user interfaces and experiences using Figma, Adobe XD, and design thinking principles.',
-    duration: '10 weeks',
-    level: 'Beginner',
-    price: 39999,
-    category: 'Design',
-    instructor: 'Neha Gupta',
-    rating: 4.7,
-    studentsEnrolled: 2100,
-  },
-];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedLevel, setSelectedLevel] = useState('all');
-  const [courses, setCourses] = useState(sampleCourses);
-  const [loading, setLoading] = useState(true);
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
 
-  // Fetch courses from Google Sheets on mount
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await fetch('/api/courses');
-        const data = await response.json();
-        
-        if (data.success && data.courses.length > 0) {
-          setCourses(data.courses);
-        } else {
-          // Use sample courses as fallback
-          setCourses(sampleCourses);
-        }
-      } catch (error) {
-        console.error('Error fetching courses:', error);
-        // Use sample courses as fallback
-        setCourses(sampleCourses);
-      } finally {
+      if (result?.error) {
+        setError(result.error);
         setLoading(false);
+        return;
       }
-    };
 
-    fetchCourses();
-  }, []);
-
-  // Extract unique categories and levels
-  const categories = useMemo(() =>
-    [...new Set(courses.map(course => course.category))],
-    [courses]
-  );
-  
-  const levels = useMemo(() =>
-    [...new Set(courses.map(course => course.level))],
-    [courses]
-  );
-
-  // Filter courses based on search, category, and level
-  const filteredCourses = useMemo(() => {
-    return courses.filter(course => {
-      const matchesSearch = searchQuery === '' || 
-        course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        course.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        course.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
-      const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
-
-      return matchesSearch && matchesCategory && matchesLevel;
-    });
-  }, [searchQuery, selectedCategory, selectedLevel, courses]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading courses...</p>
-        </div>
-      </div>
-    );
-  }
+      if (result?.ok) {
+        // Redirect to admin dashboard or the page they were trying to access
+        const callbackUrl = searchParams.get('callbackUrl') || '/admin';
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with Search */}
-      <Header onSearch={setSearchQuery} />
+    <div className="bg-white rounded-2xl shadow-xl p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <span>{error}</span>
+              </div>
+            )}
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Transform Your Workforce
-            </h1>
-            <p className="text-xl text-primary-100 max-w-2xl mx-auto">
-              Upskill your team with industry-leading courses
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-12 bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {/* Email Field */}
             <div>
-              <div className="text-3xl font-bold text-primary-600">500+</div>
-              <div className="text-sm text-gray-600">Companies</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary-600">50K+</div>
-              <div className="text-sm text-gray-600">Learners</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary-600">100+</div>
-              <div className="text-sm text-gray-600">Instructors</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary-600">95%</div>
-              <div className="text-sm text-gray-600">Satisfaction</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content with Sidebar */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <CourseSidebar
-                categories={categories}
-                levels={levels}
-                selectedCategory={selectedCategory}
-                selectedLevel={selectedLevel}
-                onCategoryChange={setSelectedCategory}
-                onLevelChange={setSelectedLevel}
-                courseCount={filteredCourses.length}
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                placeholder="admin@edtech.com"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
               />
             </div>
 
-            {/* Courses Grid */}
-            <div className="lg:col-span-3">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {searchQuery ? `Search Results for "${searchQuery}"` : 'All Courses'}
-                </h2>
-                <p className="text-gray-600 mt-1">
-                  {filteredCourses.length} courses available
-                </p>
-              </div>
+            {/* Password Field */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                placeholder="••••••••"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              />
+            </div>
 
-              {filteredCourses.length === 0 ? (
-                <div className="bg-white rounded-lg shadow p-12 text-center">
-                  <div className="text-gray-400 mb-4">
-                    <svg className="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No courses found</h3>
-                  <p className="text-gray-600 mb-4">
-                    Try adjusting your search or filters
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSearchQuery('');
-                      setSelectedCategory('all');
-                      setSelectedLevel('all');
-                    }}
-                    className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-                  >
-                    Clear All Filters
-                  </button>
-                </div>
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing in...
+                </span>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredCourses.map((course) => (
-                    <CourseCard key={course.id} course={course} />
-                  ))}
-                </div>
+                'Sign In'
               )}
-            </div>
-          </div>
-        </div>
-      </section>
+            </button>
+          </form>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">EdTech Pro</h3>
-              <p className="text-gray-400">
-                Empowering organizations through world-class training
-              </p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">About Us</a></li>
-                <li><a href="/" className="hover:text-white">Courses</a></li>
-                <li><a href="#" className="hover:text-white">For Business</a></li>
-                <li><a href="#" className="hover:text-white">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>sales@edtech.com</li>
-                <li>+91 98765 43210</li>
-                <li>Bangalore, India</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 EdTech Pro. All rights reserved.</p>
+          {/* Additional Info */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <p className="text-center text-sm text-gray-600">
+              Need access? Contact your system administrator
+            </p>
           </div>
         </div>
-      </footer>
+  );
+}
+
+// Loading fallback component
+function LoginFormSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl shadow-xl p-8">
+      <div className="animate-pulse space-y-6">
+        <div className="space-y-2">
+          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+          <div className="h-12 bg-gray-200 rounded"></div>
+        </div>
+        <div className="space-y-2">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-12 bg-gray-200 rounded"></div>
+        </div>
+        <div className="h-12 bg-primary-200 rounded"></div>
+      </div>
+    </div>
+  );
+}
+
+// Main page component
+export default function AdminLoginPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center px-4">
+      <div className="max-w-md w-full">
+        {/* Logo/Brand Section */}
+        <div className="text-center mb-8">
+          <div className="inline-block bg-primary-600 text-white p-4 rounded-full mb-4">
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Portal</h1>
+          <p className="text-gray-600">Sign in to manage your EdTech platform</p>
+        </div>
+
+        {/* Login Form wrapped in Suspense */}
+        <Suspense fallback={<LoginFormSkeleton />}>
+          <LoginForm />
+        </Suspense>
+
+        {/* Back to Website Link */}
+        <div className="text-center mt-6">
+          <Link
+            href="/"
+            className="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-1"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Website
+          </Link>
+        </div>
+
+        {/* Security Notice */}
+        <div className="mt-8 text-center text-xs text-gray-500">
+          <p>🔒 This is a secure area. All activities are logged.</p>
+        </div>
+      </div>
     </div>
   );
 }
